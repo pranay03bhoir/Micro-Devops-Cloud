@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: blog-app
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/blog_app
+    username: root
+    password: Pranay@666
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          show_sql: true
+          dialect: org.hibernate.dialect.MySQLDialect
+

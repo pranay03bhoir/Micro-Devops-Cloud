@@ -9,9 +9,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-          show_sql: true
-          dialect: org.hibernate.dialect.MySQLDialect
-
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+      database-platform: org.hibernate.dialect.MySQLDialect

@@ -28,6 +28,7 @@ public class Article {
     // by using the -
     @Lob // This annotation can increase the variable size based on the user's content szie.
     private String content;
+    private Integer readingMinutes;
     private Boolean paid;
     @Enumerated(EnumType.STRING) // This annotation tells the database to save the ENUMs in String format.
     private Status status;

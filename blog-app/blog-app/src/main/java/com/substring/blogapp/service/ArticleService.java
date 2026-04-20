@@ -1,6 +1,8 @@
 package com.substring.blogapp.service;
 
 import com.substring.blogapp.dto.ArticleDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
 public interface ArticleService {
 
     List<ArticleDto> getAll();
+
+    Page<ArticleDto> getAllArticlesPaginated(Pageable pageable);
 
     ArticleDto getArticleById(Long articleId);
 

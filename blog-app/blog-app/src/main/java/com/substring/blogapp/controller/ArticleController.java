@@ -6,6 +6,8 @@ package com.substring.blogapp.controller;
 import com.substring.blogapp.dto.ArticleDto;
 import com.substring.blogapp.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,6 +72,11 @@ public class ArticleController {
     @GetMapping("/all")
     public List<ArticleDto> getAll() {
         return articleService.getAll();
+    }
+
+    @GetMapping("/all/paginated")
+    public Page<ArticleDto> getAllArticlePaginated(Pageable pageable) {
+        return articleService.getAllArticlesPaginated(pageable);
     }
 
     @DeleteMapping("/{articleId}")

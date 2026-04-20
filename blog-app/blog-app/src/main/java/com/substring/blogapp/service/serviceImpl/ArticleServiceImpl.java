@@ -10,6 +10,8 @@ import com.substring.blogapp.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,6 +34,12 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = articleRepository.findAll();
         return articles.stream()
                 .map((article -> modelMapper.map(article, ArticleDto.class))).toList();
+    }
+
+    @Override
+    public Page<ArticleDto> getAllArticlesPaginated(Pageable pageable) {
+        Page<Article> articlePage = articleRepository.findAll(pageable);
+        return articlePage.map((article -> modelMapper.map(article, ArticleDto.class)));
     }
 
     @Override

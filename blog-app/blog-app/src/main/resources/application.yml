@@ -15,6 +15,13 @@ spring:
         format_sql: true
       database-platform: org.hibernate.dialect.MySQLDialect
 
+  #minIO configuration
+  minio:
+    endpoint: http://localhost:9000
+    access-key: minioadmin
+    secret-key: minioadmin
+    bucket-name: blog-app
+
 logging:
   level:
     org:

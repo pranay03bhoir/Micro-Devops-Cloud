@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity // These annotations are the metadata of the class when you write them above a class.
 // And if you write them above a method, then these become metatdat of the method.
@@ -27,7 +28,7 @@ public class Category {
     @Column(name = "category_name", unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category") // One category can have multiple categories.
-    private ArrayList<Article> articles = new ArrayList<>();
+    @OneToMany(mappedBy = "category") // One category can have multiple articles.
+    private List<Article> articles = new ArrayList<>();
 
 }

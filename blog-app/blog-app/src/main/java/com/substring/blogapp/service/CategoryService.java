@@ -1,14 +1,19 @@
 package com.substring.blogapp.service;
 
+import com.substring.blogapp.dto.CategoryDto;
 import org.springframework.stereotype.Service;
 
-@Service
-public class CategoryService {
-    public void create(){
-        System.out.println("category created");
-    }
+import java.util.List;
 
-    public void update(){
-        System.out.println("category updated");
-    }
+@Service
+public interface CategoryService {
+    CategoryDto createCategory(CategoryDto categoryDto);
+
+    CategoryDto updateCategory(CategoryDto categoryDto, Long categoryId);
+
+    void deleteCategory(Long categoryId);
+
+    List<CategoryDto> fetchAllCategories();
+
+    CategoryDto getACategoryById(Long categoryId);
 }

@@ -16,5 +16,5 @@ public class ReviewDTO {
     private String title;
     private String comment;
     private Integer rating;
-    private ProductsDTO product;
+    private ProductDTO product;
 }

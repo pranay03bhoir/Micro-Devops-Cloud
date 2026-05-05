@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductsDTO {
+public class ProductDTO {
     private UUID id;
     private String title;
     private String shortDesc;

@@ -1,6 +1,5 @@
 package com.pranay.easybuy.products.models;
 
-import com.pranay.easybuy.products.dto.ProductsDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,5 +20,5 @@ public class Review {
     private String comment;
     private Integer rating;
     @ManyToOne
-    private Products product;
+    private Product product;
 }

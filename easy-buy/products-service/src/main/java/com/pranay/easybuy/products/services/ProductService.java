@@ -1,24 +1,27 @@
 package com.pranay.easybuy.products.services;
 
-import com.pranay.easybuy.products.dto.ProductDTO;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import com.pranay.easybuy.products.dto.ProductDTO;
 
 @Service
 public interface ProductService {
 
-    ProductDTO createProduct(ProductDTO productDTO);
+	ProductDTO createProduct(ProductDTO productDTO);
 
-    List<ProductDTO> getAllProducts();
+	List<ProductDTO> getAllProducts();
 
-    ProductDTO getProductById(UUID productId);
+	ProductDTO getProductById(UUID productId);
 
-    ProductDTO updateProduct(ProductDTO productDTO, UUID productId);
+	ProductDTO updateProduct(ProductDTO productDTO, UUID productId);
 
-    String deleteProduct(UUID productId);
+	String deleteProduct(UUID productId);
 
-    List<ProductDTO> getProductsByCategory(Long categoryId);
+	List<ProductDTO> getProductsByCategory(Long categoryId);
+
+	ProductDTO addCategoryToProduct(UUID productId, Long categoryId);
 
 }

@@ -19,36 +19,39 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Product {
 
-    @Id
-    @GeneratedValue
-    @UuidGenerator
-    private UUID id;
+	@Id
+	@GeneratedValue
+	@UuidGenerator
+	private UUID id;
 
-    private String title;
-    @Column(columnDefinition = "TEXT")
-    private String short_desc;
-    @Lob
-    private String long_desc;
-    private Double price;
-    private Integer discount;
-    private Boolean live = false;
-    /**
-     * JPA annotation to map collections of basic types or embeddable objects to separate database tables.
-     * - Maps the productImages List<String> to a separate database table (typically named products_productImages)
-     * - Each string in the list becomes a separate row in that table
-     * - fetch = FetchType.EAGER means the collection is loaded immediately when the Products entity is loaded
-     * - Creates a join table with foreign key to the parent entity
-     * - The productImages field stores multiple image URLs as strings, and this annotation creates a separate table to store them with a one-to-many relationship to the products table.
-     */
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> productImages = new ArrayList<>();
+	private String title;
+	@Column(columnDefinition = "TEXT")
+	private String short_desc;
+	@Column(columnDefinition = "TEXT")
+	private String long_desc;
+	private Double price;
+	private Integer discount;
+	private Boolean live = false;
+	/**
+	 * JPA annotation to map collections of basic types or embeddable objects to
+	 * separate database tables. - Maps the productImages List<String> to a separate
+	 * database table (typically named products_productImages) - Each string in the
+	 * list becomes a separate row in that table - fetch = FetchType.EAGER means the
+	 * collection is loaded immediately when the Products entity is loaded - Creates
+	 * a join table with foreign key to the parent entity - The productImages field
+	 * stores multiple image URLs as strings, and this annotation creates a separate
+	 * table to store them with a one-to-many relationship to the products table.
+	 */
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> productImages = new ArrayList<>();
 
 //    @ManyToOne
 //    private Category category;
 
-    @ManyToMany(mappedBy = "products", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Category> categories = new ArrayList<>();
+	@ManyToMany(mappedBy = "products", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private List<Category> categories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Review> reviews = new ArrayList<>();
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Review> reviews = new ArrayList<>();
 }

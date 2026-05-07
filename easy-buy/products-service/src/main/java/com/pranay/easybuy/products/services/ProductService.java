@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.pranay.easybuy.products.dto.ReviewDTO;
+import com.pranay.easybuy.products.responseBuilder.PagedResponse;
 import org.springframework.stereotype.Service;
 
 import com.pranay.easybuy.products.dto.ProductDTO;
@@ -14,7 +15,9 @@ public interface ProductService {
 
 	ProductDTO createProduct(ProductDTO productDTO);
 
-	List<ProductDTO> getAllProducts();
+//	List<ProductDTO> getAllProducts();
+
+	PagedResponse<ProductDTO> getAllProducts(int page, int size);
 
 	ProductDTO getProductById(UUID productId);
 

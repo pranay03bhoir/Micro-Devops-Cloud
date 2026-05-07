@@ -5,11 +5,17 @@ import java.util.List;
 import java.util.UUID;
 
 import com.pranay.easybuy.products.config.ReviewMapper;
+import com.pranay.easybuy.products.dto.CategoryDTO;
 import com.pranay.easybuy.products.dto.ReviewDTO;
 import com.pranay.easybuy.products.exceptions.InvalidRequestException;
 import com.pranay.easybuy.products.models.Review;
 import com.pranay.easybuy.products.repositories.ReviewRepository;
+import com.pranay.easybuy.products.responseBuilder.PagedResponse;
+import com.pranay.easybuy.products.services.CategoryService;
 import com.pranay.easybuy.products.services.ImageStorageService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pranay.easybuy.products.config.CategoryMapper;
@@ -36,17 +42,26 @@ public class ProductServiceImpl implements ProductService {
 	private final ReviewMapper reviewMapper;
 	private final ReviewRepository reviewRepository;
 	private final ImageStorageService imageStorageService;
+	private final CategoryService categoryService;
 
 	@Override
 	public ProductDTO createProduct(ProductDTO productDTO) {
 		Product product = productMapper.toEntity(productDTO);
+		List<Category> categories = resolveCategories(productDTO.getCategories());
+		product.setCategories(categories);
 		Product savedProduct = productRepository.save(product);
+		syncCategories(savedProduct, categories);
 		return productMapper.toDto(savedProduct);
 	}
 
 	@Override
-	public List<ProductDTO> getAllProducts() {
-		return productMapper.toDtoList(productRepository.findAll());
+	public PagedResponse<ProductDTO> getAllProducts(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Product> productPage = productRepository.findAll(pageable);
+		if (productPage.isEmpty()) {
+			throw new InvalidRequestException("No products present!!!");
+		}
+		return productMapper.toPagedResponseDto(productPage);
 	}
 
 	@Override
@@ -61,12 +76,13 @@ public class ProductServiceImpl implements ProductService {
 		Product product = productRepository.findById(productId)
 				.orElseThrow(() -> new ResourceNotFoundException("Product not found!!!"));
 		product.setTitle(productDTO.getTitle());
-		product.setShort_desc(productDTO.getShortDesc());
-		product.setLong_desc(productDTO.getLongDesc());
+		product.setShort_desc(productDTO.getShort_desc());
+		product.setLong_desc(productDTO.getLong_desc());
 		product.setPrice(productDTO.getPrice());
 		product.setDiscount(productDTO.getDiscount());
 		product.setProductImages(productDTO.getProductImages());
 		product.setLive(productDTO.getLive());
+		productRepository.save(product);
 		return productMapper.toDto(product);
 	}
 
@@ -154,5 +170,31 @@ public class ProductServiceImpl implements ProductService {
 			uploadedUrls.add(imageStorageService.uploadImage(file));
 		}
 		return uploadedUrls;
+	}
+
+	private List<Category> resolveCategories(List<CategoryDTO> categoryDTOS) {
+		if (categoryDTOS == null) {
+			return new ArrayList<>();
+		}
+		List<Category> categories = new ArrayList<>();
+		for (CategoryDTO categoryDTO : categoryDTOS) {
+			if (categoryDTO.getId() == null) {
+				Category category = new Category();
+				category.setTitle(categoryDTO.getTitle());
+				categories.add(categoryRepository.save(category));
+			} else {
+				categories.add(findCategory(categoryDTO.getId()));
+			}
+		}
+		return categories;
+	}
+
+	private void syncCategories(Product product, List<Category> categories) {
+		for (Category category : categories) {
+			if (!category.getProducts().contains(product)) {
+				category.getProducts().add(product);
+			}
+			categoryRepository.save(category);
+		}
 	}
 }

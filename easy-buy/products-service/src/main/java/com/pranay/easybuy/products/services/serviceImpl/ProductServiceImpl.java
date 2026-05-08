@@ -138,14 +138,15 @@ public class ProductServiceImpl implements ProductService {
 		return reviewMapper.toDto(review);
 	}
 
+
 	@Override
-	public ProductDTO uploadProductImages(UUID productId, List<MultipartFile> files) {
+	public ProductDTO addProductImages(UUID productId, List<MultipartFile> files) {
 		Product product = findProduct(productId);
-		List<String> uploadUrls = uploadImages(files);
-		if (product.getProductImages() == null) {
+		List<String> productImagesUrl = uploadImagesFile(files);
+		if (product.getProductImages().isEmpty()) {
 			product.setProductImages(new ArrayList<>());
 		}
-		product.getProductImages().addAll(uploadUrls);
+		product.getProductImages().addAll(productImagesUrl);
 		return productMapper.toDto(product);
 	}
 
@@ -159,17 +160,6 @@ public class ProductServiceImpl implements ProductService {
 		Category category = categoryRepository.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category not found!!!"));
 		return category;
-	}
-
-	private List<String> uploadImages(List<MultipartFile> files) {
-		if (files == null || files.isEmpty()) {
-			throw new InvalidRequestException("At least one product image is required");
-		}
-		List<String> uploadedUrls = new ArrayList<>();
-		for (MultipartFile file : files) {
-			uploadedUrls.add(imageStorageService.uploadImage(file));
-		}
-		return uploadedUrls;
 	}
 
 	private List<Category> resolveCategories(List<CategoryDTO> categoryDTOS) {
@@ -196,5 +186,16 @@ public class ProductServiceImpl implements ProductService {
 			}
 			categoryRepository.save(category);
 		}
+	}
+
+	private List<String> uploadImagesFile(List<MultipartFile> files) {
+		if (files.isEmpty()) {
+			throw new InvalidRequestException("At least one product image is required");
+		}
+		List<String> imageUrls = new ArrayList<>();
+		for (MultipartFile file : files) {
+			imageUrls.add(imageStorageService.uploadImage(file));
+		}
+		return imageUrls;
 	}
 }

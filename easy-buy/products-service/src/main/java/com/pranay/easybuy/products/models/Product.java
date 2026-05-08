@@ -48,8 +48,7 @@ public class Product {
 //    @ManyToOne
 //    private Category category;
 
-	@ManyToMany(mappedBy = "products", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REFRESH })
+	@ManyToMany
 	private List<Category> categories = new ArrayList<>();
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

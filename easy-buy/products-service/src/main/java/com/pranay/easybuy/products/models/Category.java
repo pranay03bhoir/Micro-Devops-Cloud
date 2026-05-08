@@ -17,11 +17,12 @@ import java.util.List;
 @NoArgsConstructor
 public class Category {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String title;
 
-    @ManyToMany
-    private List<Product> products = new ArrayList<>();
+	@ManyToMany(mappedBy = "categories", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private List<Product> products = new ArrayList<>();
 }

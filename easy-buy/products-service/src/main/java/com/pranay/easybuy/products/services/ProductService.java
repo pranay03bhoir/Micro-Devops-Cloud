@@ -33,5 +33,6 @@ public interface ProductService {
 
 	ReviewDTO addReviewToProduct(UUID productId, ReviewDTO reviewDTO);
 
-	ProductDTO uploadProductImages(UUID productId, List<MultipartFile> files);
+
+	ProductDTO addProductImages(UUID productId, List<MultipartFile> files);
 }

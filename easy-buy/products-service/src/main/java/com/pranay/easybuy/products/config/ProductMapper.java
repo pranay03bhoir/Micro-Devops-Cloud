@@ -15,11 +15,15 @@ public interface ProductMapper {
 //    To DTO
 	@Mapping(target = "short_desc", source = "short_desc")
 	@Mapping(target = "long_desc", source = "long_desc")
+	@Mapping(target = "createdAt", source = "createdAt")
+	@Mapping(target = "updatedAt", source = "updatedAt")
 	ProductDTO toDto(Product product);
 
 //    To Entity
 	@Mapping(target = "short_desc", source = "short_desc")
 	@Mapping(target = "long_desc", source = "long_desc")
+	@Mapping(target = "createdAt", source = "createdAt")
+	@Mapping(target = "updatedAt", source = "updatedAt")
 	Product toEntity(ProductDTO productDTO);
 
 //    Product List to DTO

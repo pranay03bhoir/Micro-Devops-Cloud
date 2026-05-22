@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.List;
 
 @Getter
@@ -17,4 +18,6 @@ public class CategoryDTO {
     private Long id;
     private String title;
     private List<ProductDTO> products;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

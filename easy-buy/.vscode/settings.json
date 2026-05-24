@@ -1,3 +1,17 @@
 {
-  "java.dependency.packagePresentation": "hierarchical"
+  "java.dependency.packagePresentation": "hierarchical",
+    "files.associations": {
+    "**/src/main/resources/application*.yaml": "spring-boot-properties-yaml",
+    "**/src/main/resources/application*.yml": "spring-boot-properties-yaml",
+    "**/src/main/resources/bootstrap*.yaml": "spring-boot-properties-yaml",
+    "**/src/main/resources/bootstrap*.yml": "spring-boot-properties-yaml"
+  },
+   "yaml.schemas": {
+    ".vscode/schemas/spring-application.json": [
+      "**/src/main/resources/application.yaml",
+      "**/src/main/resources/application.yml",
+      "**/src/main/resources/bootstrap.yaml",
+      "**/src/main/resources/bootstrap.yml"
+    ]
+  }
 }

@@ -33,9 +33,9 @@ eureka:
 product:
   service:
     id: lb://PRODUCTS-SERVICE
-    uri: ${PRODUCTS_SERVICE_URI:http://localhost:8081}
+    uri: ${PRODUCT_SERVICE_URI:http://localhost:8081}
 
-cart-order:
+cartOrder:
   service:
     id: lb://CART-ORDER-SERVICE
     uri: ${CART_ORDER_SERVICE_URI:http://localhost:8082}

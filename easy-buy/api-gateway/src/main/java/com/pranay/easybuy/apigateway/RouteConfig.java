@@ -1,6 +1,5 @@
 package com.pranay.easybuy.apigateway;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -24,7 +23,10 @@ public class RouteConfig {
 		return builder.routes()
 				.route("products-service",
 						route -> route.path("/products-service/**")
-								.filters(f -> f.rewritePath("/products-service/?(?<remaining>.*)", "/${remaining}"))
+								.filters(f -> f
+										.circuitBreaker(c -> c.setName("productCircuitBreaker")
+												.setFallbackUri("forward:/product-fallback"))
+										.rewritePath("/products-service/?(?<remaining>.*)", "/${remaining}"))
 								.uri(productServiceId))
 				.route("cart-order-service",
 						route -> route.path("/cart-order-service/**")
@@ -37,20 +39,22 @@ public class RouteConfig {
 	// If we want different routes for different profiles we can do that with the
 	// @Profile annotations
 	// Example -
-//	@Bean
-//	@Profile("dev") // or @Profile("prod")
-//	public RouteLocator route(RouteLocatorBuilder builder) {
-//		return builder.routes()
-//				.route("products-service",
-//						route -> route.path("/products-service/**")
-//								.filters(f -> f.rewritePath("/products-service/?(?<remaining>.*)", "/${remaining}"))
-//								.uri(productServiceId))
-//				.route("cart-order-service",
-//						route -> route.path("/cart-order-service/**")
-//								.filters(f -> f.rewritePath("/cart-order-service?(?<remaining>.*)", "/${remaining}"))
-//								.uri(cartOrderServiceId))
-//
-//				.build();
-//	}
+	// @Bean
+	// @Profile("dev") // or @Profile("prod")
+	// public RouteLocator route(RouteLocatorBuilder builder) {
+	// return builder.routes()
+	// .route("products-service",
+	// route -> route.path("/products-service/**")
+	// .filters(f -> f.rewritePath("/products-service/?(?<remaining>.*)",
+	// "/${remaining}"))
+	// .uri(productServiceId))
+	// .route("cart-order-service",
+	// route -> route.path("/cart-order-service/**")
+	// .filters(f -> f.rewritePath("/cart-order-service?(?<remaining>.*)",
+	// "/${remaining}"))
+	// .uri(cartOrderServiceId))
+	//
+	// .build();
+	// }
 
 }

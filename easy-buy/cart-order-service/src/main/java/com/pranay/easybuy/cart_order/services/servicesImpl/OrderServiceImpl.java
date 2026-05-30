@@ -22,41 +22,63 @@ public class OrderServiceImpl implements OrderService {
 	private final ProductClientTest productClientTest;
 
 	@Override
-	public String createOrder(OrderCreateRequest orderCreateRequest) {
-
+	public Object createOrder(OrderCreateRequest orderCreateRequest) {
+		if (orderCreateRequest.orderItems() == null || orderCreateRequest.orderItems().isEmpty()) {
+			throw new IllegalArgumentException("Order items cannot be null or empty");
+		}
 		String productId = orderCreateRequest.orderItems().getFirst().productId();
 		ProductResponse product = this.getProduct(productId);
-		return "Order created";
+
+		// Example: Replace this with real order creation logic. For now, return dummy
+		// order ID.
+		return product;
 	}
 
 	private ProductResponse getProduct(String productId) {
 		try {
-			var productUrl = "http://localhost:8081/api/products/" + productId;
-			log.info("get product url {}", productUrl);
+			ProductResponse productbyId = productClientTest.getProductById(productId);
+			if (productbyId == null) {
+				ProductResponse productResponse = new ProductResponse(
+						productId,
+						"Demo product",
+						"This is a demo product",
+						"this is long desc demo product",
+						23423.88,
+						500,
+						true,
+						java.util.Collections.emptyList());
 
+				return productResponse;
+			}
 			return productClientTest.getProductById(productId);
 
-//			=======================================================================================
+			// var productUrl = "http://localhost:8081/api/products/" + productId;
+			// log.info("get product url {}", productUrl);
+			// =======================================================================================
 			// Using RestClient to call the product service.
-//			ProductResponse productResponse = restClient.get().uri(productUrl)
-//					.header(HttpHeaders.ACCEPT, "application/json").header(HttpHeaders.AUTHORIZATION, "").retrieve()
-//					.body(ProductResponse.class);
-//			return productResponse;
-//			===============================================================================================
+			// ProductResponse productResponse = restClient.get().uri(productUrl)
+			// .header(HttpHeaders.ACCEPT,
+			// "application/json").header(HttpHeaders.AUTHORIZATION, "").retrieve()
+			// .body(ProductResponse.class);
+			// return productResponse;
+			// ===============================================================================================
 			// Below code used RestTemplate
 			// call product service using restTemplate
 
-//			ResponseEntity<ProductResponse> productResponse = restTemplate.getForEntity(productUrl,
-//					ProductResponse.class);
+			// ResponseEntity<ProductResponse> productResponse =
+			// restTemplate.getForEntity(productUrl,
+			// ProductResponse.class);
 			// validation logic
-//			if (productResponse.getStatusCode().is2xxSuccessful()) {
-//				log.info("we got successful response from product service {}", productResponse);
-//			}
+			// if (productResponse.getStatusCode().is2xxSuccessful()) {
+			// log.info("we got successful response from product service {}",
+			// productResponse);
+			// }
 
-//			ProductResponse productResponse = restTemplate.getForObject(productUrl, ProductResponse.class);
+			// ProductResponse productResponse = restTemplate.getForObject(productUrl,
+			// ProductResponse.class);
 
-//			log.info("get product response {}", productResponse);
-//			return productResponse.getBody();
+			// log.info("get product response {}", productResponse);
+			// return productResponse.getBody();
 		} catch (HttpClientErrorException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Product not found" + e.getStatusCode());

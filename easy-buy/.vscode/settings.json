@@ -13,5 +13,6 @@
       "**/src/main/resources/bootstrap.yaml",
       "**/src/main/resources/bootstrap.yml"
     ]
-  }
+  },
+  "java.compile.nullAnalysis.mode": "automatic"
 }

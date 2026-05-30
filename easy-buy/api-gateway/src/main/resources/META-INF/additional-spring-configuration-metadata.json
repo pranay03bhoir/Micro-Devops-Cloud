@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "product.service.id",
+    "type": "java.lang.String",
+    "description": "A description for 'product.service.id'"
+  },
+  {
+    "name": "product.service.uri",
+    "type": "java.lang.String",
+    "description": "A description for 'product.service.uri'"
+  },
+  {
+    "name": "cartOrder.service.id",
+    "type": "java.lang.String",
+    "description": "A description for 'cartOrder.service.id'"
+  },
+  {
+    "name": "cartOrder.service.uri",
+    "type": "java.lang.String",
+    "description": "A description for 'cartOrder.service.uri'"
+  }
+]}

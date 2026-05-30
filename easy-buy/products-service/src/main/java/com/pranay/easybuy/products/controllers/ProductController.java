@@ -1,26 +1,42 @@
 package com.pranay.easybuy.products.controllers;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.pranay.easybuy.products.dto.ProductDTO;
 import com.pranay.easybuy.products.responseBuilder.PagedResponse;
 import com.pranay.easybuy.products.services.ProductService;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 @Validated
+@RefreshScope
 public class ProductController {
+
+	@Value("${IMAGEKIT_FOLDER}")
+	private String imageKitFolderPath;
 
 	private final ProductService productService;
 
@@ -71,6 +87,11 @@ public class ProductController {
 	public ResponseEntity<ProductDTO> addProductImages(@PathVariable UUID productId,
 			@RequestParam("files") List<MultipartFile> files) {
 		return new ResponseEntity<>(productService.addProductImages(productId, files), HttpStatus.OK);
+	}
+
+	@GetMapping("/imagekit-folder-path")
+	public ResponseEntity<String> getImageKitFolderPath() {
+		return new ResponseEntity<>(imageKitFolderPath, HttpStatus.OK);
 	}
 
 }

@@ -4,6 +4,8 @@ import com.pranay.easybuy.cart_order.OrderCreateRequest;
 import com.pranay.easybuy.cart_order.client.ProductClientTest;
 import com.pranay.easybuy.cart_order.payload.ProductResponse;
 import com.pranay.easybuy.cart_order.services.OrderService;
+
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -22,16 +24,28 @@ public class OrderServiceImpl implements OrderService {
 	private final ProductClientTest productClientTest;
 
 	@Override
+	@Retry(name = "createOrderRetry", fallbackMethod = "createOrderFallback")
 	public Object createOrder(OrderCreateRequest orderCreateRequest) {
 		if (orderCreateRequest.orderItems() == null || orderCreateRequest.orderItems().isEmpty()) {
 			throw new IllegalArgumentException("Order items cannot be null or empty");
 		}
+		log.info("Retrying.......");
 		String productId = orderCreateRequest.orderItems().getFirst().productId();
+		// if (2 < 3) {
+		// 	throw new RuntimeException("Product not found");
+		// }
 		ProductResponse product = this.getProduct(productId);
 
 		// Example: Replace this with real order creation logic. For now, return dummy
 		// order ID.
 		return product;
+	}
+
+	// Fallback for retry.
+	public Object createOrderFallback(OrderCreateRequest orderCreateRequest, Throwable t) {
+		log.info("Create order fallback");
+		log.info("Exception {}", t.getMessage());
+		return null;
 	}
 
 	private ProductResponse getProduct(String productId) {

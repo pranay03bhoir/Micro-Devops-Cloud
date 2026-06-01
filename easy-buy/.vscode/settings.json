@@ -14,5 +14,8 @@
       "**/src/main/resources/bootstrap.yml"
     ]
   },
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "[java]": {
+    "editor.defaultFormatter": "josevseb.google-java-format-for-vs-code"
+  }
 }

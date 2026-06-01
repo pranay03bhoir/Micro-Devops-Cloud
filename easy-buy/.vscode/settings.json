@@ -16,6 +16,6 @@
   },
   "java.compile.nullAnalysis.mode": "automatic",
   "[java]": {
-    "editor.defaultFormatter": "josevseb.google-java-format-for-vs-code"
+    "editor.defaultFormatter": "redhat.java"
   }
 }

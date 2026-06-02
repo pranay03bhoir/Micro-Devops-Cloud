@@ -15,7 +15,7 @@ public interface ProductService {
 
 	ProductDTO createProduct(ProductDTO productDTO);
 
-//	List<ProductDTO> getAllProducts();
+	// List<ProductDTO> getAllProducts();
 
 	PagedResponse<ProductDTO> getAllProducts(int page, int size);
 
@@ -25,14 +25,13 @@ public interface ProductService {
 
 	String deleteProduct(UUID productId);
 
-	List<ProductDTO> getProductsByCategory(Long categoryId);
+	PagedResponse<ProductDTO> getProductsByCategory(Long categoryId, int page, int size);
 
 	ProductDTO addCategoryToProduct(UUID productId, Long categoryId);
 
 	ProductDTO removeCategoryFromProduct(UUID productId, Long categoryId);
 
 	ReviewDTO addReviewToProduct(UUID productId, ReviewDTO reviewDTO);
-
 
 	ProductDTO addProductImages(UUID productId, List<MultipartFile> files);
 }

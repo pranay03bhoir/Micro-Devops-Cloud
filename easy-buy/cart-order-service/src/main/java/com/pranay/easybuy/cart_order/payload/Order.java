@@ -57,12 +57,23 @@ public class Order {
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<OrderItem> items = new ArrayList<>();
 
+	@PrePersist
 	void onCreate() {
+		Instant now = Instant.now();
+		if (createdAt == null) {
+			createdAt = now;
+		}
+		updatedAt = now;
 		if (status == null) {
 			status = OrderStatus.CONFIRMED;
 		}
 		if (totalAmount == null) {
 			totalAmount = BigDecimal.ZERO;
 		}
+	}
+
+	@PreUpdate
+	void onUpdate() {
+		updatedAt = Instant.now();
 	}
 }

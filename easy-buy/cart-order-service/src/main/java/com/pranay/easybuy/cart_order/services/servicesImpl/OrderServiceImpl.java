@@ -2,7 +2,7 @@ package com.pranay.easybuy.cart_order.services.servicesImpl;
 
 import com.pranay.easybuy.cart_order.OrderCreateRequest;
 import com.pranay.easybuy.cart_order.client.ProductClientTest;
-import com.pranay.easybuy.cart_order.payload.ProductResponse;
+import com.pranay.easybuy.cart_order.dto.ProductResponse;
 import com.pranay.easybuy.cart_order.services.OrderService;
 
 import io.github.resilience4j.retry.annotation.Retry;

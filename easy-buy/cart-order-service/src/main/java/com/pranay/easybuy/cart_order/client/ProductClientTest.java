@@ -1,7 +1,8 @@
 package com.pranay.easybuy.cart_order.client;
 
 import com.pranay.easybuy.cart_order.client.fallbacks.ProductClientFallback;
-import com.pranay.easybuy.cart_order.payload.ProductResponse;
+import com.pranay.easybuy.cart_order.dto.ProductResponse;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -40,4 +40,20 @@ public class CartItem {
 
 	@Column(nullable = false, precision = 12, scale = 2)
 	private BigDecimal lineTotal;
+
+
+	@PrePersist
+	@PreUpdate
+	void recalc() {
+		if (quantity == null) {
+			quantity = 1;
+		}
+		if (discountPercent == null) {
+			discountPercent = 0;
+		}
+		if (unitPrice == null) {
+			unitPrice = BigDecimal.ZERO;
+		}
+		lineTotal = unitPrice.multiply(BigDecimal.valueOf(quantity));
+	}
 }

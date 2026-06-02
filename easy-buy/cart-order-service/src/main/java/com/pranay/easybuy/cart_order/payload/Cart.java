@@ -42,4 +42,16 @@ public class Cart {
 
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<CartItem> items = new ArrayList<>();
+
+	@PrePersist
+	void onCreate() {
+		Instant now = Instant.now();
+		if (createdAt == null) {
+			createdAt = now;
+		}
+		updatedAt = now;
+		if (status == null) {
+			status = CartStatus.ACTIVE;
+		}
+	}
 }

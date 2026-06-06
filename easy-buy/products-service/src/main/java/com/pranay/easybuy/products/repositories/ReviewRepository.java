@@ -14,6 +14,6 @@ import java.util.UUID;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<List<Review>> findReviewsByProduct(Product product);
 
-    @Query("SELECT r FROM Reviews r JOIN r.product p WHERE p.id =:productId")
+    @Query("SELECT r FROM Review r WHERE r.product.id = :productId")
     Optional<List<Review>> findReviewsByProductId(UUID productId);
 }

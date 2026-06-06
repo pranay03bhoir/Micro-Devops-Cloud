@@ -17,5 +17,6 @@
   "java.compile.nullAnalysis.mode": "automatic",
   "[java]": {
     "editor.defaultFormatter": "redhat.java"
-  }
+  },
+  "maven.view": "flat"
 }

@@ -19,38 +19,44 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler({ ResourceNotFoundException.class })
     public ResponseEntity<ApiErrorResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException e,
             HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage(), request.getRequestURI(), null);
     }
 
-    @ExceptionHandler(BusinessRuleException.class)
+    @ExceptionHandler({ BusinessRuleException.class })
     public ResponseEntity<ApiErrorResponse> businessRuleExceptionHandler(BusinessRuleException e,
             HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI(), null);
     }
 
-    @ExceptionHandler(ExternalServiceException.class)
+    @ExceptionHandler({ ExternalServiceException.class })
     public ResponseEntity<ApiErrorResponse> externalServiceExceptionHandler(ExternalServiceException e,
             HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.BAD_GATEWAY, e.getMessage(), request.getRequestURI(), null);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({ MethodArgumentNotValidException.class })
     public ResponseEntity<ApiErrorResponse> handleFieldValidationException(MethodArgumentNotValidException e,
             HttpServletRequest request) {
         Map<String, String> errors = new LinkedHashMap<>();
-        e.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI(), errors);
+        e.getBindingResult().getFieldErrors().forEach(error -> {
+
+            errors.putIfAbsent(error.getField(), error.getDefaultMessage());
+        });
+
+        String message = "Validation failed for one or more fields";
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, message, request.getRequestURI(), errors);
     }
 
-    @ExceptionHandler({ HttpMessageNotReadableException.class, MethodArgumentNotValidException.class })
-    public ResponseEntity<ApiErrorResponse> handleBadRequest(Exception e, HttpServletRequest request) {
+    @ExceptionHandler({ HttpMessageNotReadableException.class })
+    public ResponseEntity<ApiErrorResponse> handleBadRequest(HttpMessageNotReadableException e,
+            HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI(), null);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({ Exception.class })
     public ResponseEntity<ApiErrorResponse> handleGenericExceptions(Exception e, HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), request.getRequestURI(), null);
     }

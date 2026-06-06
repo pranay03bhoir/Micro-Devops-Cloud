@@ -52,8 +52,12 @@ public class ProductController {
 		return new ResponseEntity<>(productService.getProductById(productId), HttpStatus.OK);
 	}
 
-	public ResponseEntity<List<ProductDTO>> getProductsByCategoryId(@PathVariable Long categoryId) {
-		return new ResponseEntity<>(productService.getProductsByCategory(categoryId), HttpStatus.OK);
+	@GetMapping("/category/{categoryId}/products")
+	public ResponseEntity<PagedResponse<ProductDTO>> getProductsByCategoryId(
+			@PathVariable Long categoryId,
+			@RequestParam(defaultValue = "0") @Min(value = 0, message = "Page value must br greater than or equal to 0") int page,
+			@RequestParam(defaultValue = "12") @Min(value = 1, message = "Size must be greater than 0") @Max(value = 100, message = "Size must be at-least 100") int size) {
+		return new ResponseEntity<>(productService.getProductsByCategory(categoryId, page, size), HttpStatus.OK);
 	}
 
 	@PostMapping("/")

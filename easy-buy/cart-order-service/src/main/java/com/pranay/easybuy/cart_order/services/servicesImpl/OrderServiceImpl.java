@@ -2,10 +2,19 @@ package com.pranay.easybuy.cart_order.services.servicesImpl;
 
 import com.pranay.easybuy.cart_order.OrderCreateRequest;
 import com.pranay.easybuy.cart_order.client.ProductClientTest;
-import com.pranay.easybuy.cart_order.payload.ProductResponse;
+import com.pranay.easybuy.cart_order.dto.CheckoutRequest;
+import com.pranay.easybuy.cart_order.dto.OrderResponse;
+import com.pranay.easybuy.cart_order.dto.ProductResponse;
+import com.pranay.easybuy.cart_order.dto.ProductSnapshot;
 import com.pranay.easybuy.cart_order.services.OrderService;
+
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,17 +30,31 @@ public class OrderServiceImpl implements OrderService {
 	private final RestClient restClient;
 	private final ProductClientTest productClientTest;
 
-	@Override
-	public Object createOrder(OrderCreateRequest orderCreateRequest) {
-		if (orderCreateRequest.orderItems() == null || orderCreateRequest.orderItems().isEmpty()) {
-			throw new IllegalArgumentException("Order items cannot be null or empty");
-		}
-		String productId = orderCreateRequest.orderItems().getFirst().productId();
-		ProductResponse product = this.getProduct(productId);
+	// @Override
+	// @Retry(name = "createOrderRetry", fallbackMethod = "createOrderFallback")
+	// public Object createOrder(OrderCreateRequest orderCreateRequest) {
+	// if (orderCreateRequest.orderItems() == null ||
+	// orderCreateRequest.orderItems().isEmpty()) {
+	// throw new IllegalArgumentException("Order items cannot be null or empty");
+	// }
+	// log.info("Retrying.......");
+	// String productId = orderCreateRequest.orderItems().getFirst().productId();
+	// // if (2 < 3) {
+	// // throw new RuntimeException("Product not found");
+	// // }
+	// ProductResponse product = this.getProduct(productId);
 
-		// Example: Replace this with real order creation logic. For now, return dummy
-		// order ID.
-		return product;
+	// // Example: Replace this with real order creation logic. For now, return
+	// dummy
+	// // order ID.
+	// return product;
+	// }
+
+	// Fallback for retry.
+	public Object createOrderFallback(OrderCreateRequest orderCreateRequest, Throwable t) {
+		log.info("Create order fallback");
+		log.info("Exception {}", t.getMessage());
+		return null;
 	}
 
 	private ProductResponse getProduct(String productId) {
@@ -88,4 +111,47 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 	}
+
+	@Override
+	public ProductSnapshot createOrder(OrderCreateRequest orderCreateRequest) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'createOrder'");
+	}
+
+	@Override
+	public OrderResponse checkout(String userId, CheckoutRequest request) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'checkout'");
+	}
+
+	@Override
+	public OrderResponse getOrderById(Long orderId) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getOrderById'");
+	}
+
+	@Override
+	public OrderResponse getOrderByNumber(String orderNumber) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getOrderByNumber'");
+	}
+
+	@Override
+	public List<OrderResponse> getOrdersByUserId(String userId) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getOrdersByUserId'");
+	}
+
+	@Override
+	public OrderResponse cancelOrder(Long orderId) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'cancelOrder'");
+	}
+
+	@Override
+	public void releaseReservedStock(UUID productId, Integer quantity) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'releaseReservedStock'");
+	}
+
 }

@@ -3,7 +3,7 @@ package com.pranay.easybuy.cart_order.client.fallbacks;
 import org.springframework.stereotype.Component;
 
 import com.pranay.easybuy.cart_order.client.ProductClientTest;
-import com.pranay.easybuy.cart_order.payload.ProductResponse;
+import com.pranay.easybuy.cart_order.dto.ProductResponse;
 
 import lombok.extern.slf4j.Slf4j;
 

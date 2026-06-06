@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<CategoryDTO> getCategoriesByProductId(UUID productId) {
 		Product product = productRepository.findById(productId)
 				.orElseThrow(() -> new ResourceNotFoundException("Product not found!!!"));
-		List<Category> categories = categoryRepository.findCategoriesByProductId(productId)
+		List<Category> categories = categoryRepository.findCategoriesByProductId(product.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Categories not found!!!"));
 		return categoryMapper.toDtoList(categories);
 	}

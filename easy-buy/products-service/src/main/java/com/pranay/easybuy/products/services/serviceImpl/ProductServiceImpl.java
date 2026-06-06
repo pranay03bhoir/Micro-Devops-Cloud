@@ -93,12 +93,13 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductDTO> getProductsByCategory(Long categoryId) {
+	public PagedResponse<ProductDTO> getProductsByCategory(Long categoryId, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
 		Category category = categoryRepository.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-		List<Product> products = productRepository.findProductsByCategoryId(categoryId).orElseThrow(
-				() -> new ResourceNotFoundException("Products not found of category: " + category.getTitle()));
-		return productMapper.toDtoList(products);
+
+		Page<Product> productsPage = productRepository.findProductsByCategoryId(categoryId, pageable);
+		return productMapper.toPagedResponseDto(productsPage);
 	}
 
 	@Override
@@ -137,7 +138,6 @@ public class ProductServiceImpl implements ProductService {
 		productRepository.save(product);
 		return reviewMapper.toDto(review);
 	}
-
 
 	@Override
 	public ProductDTO addProductImages(UUID productId, List<MultipartFile> files) {

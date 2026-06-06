@@ -1,7 +1,8 @@
 package com.pranay.easybuy.cart_order;
 
-import com.pranay.easybuy.cart_order.payload.ProductResponse;
 import com.pranay.easybuy.cart_order.services.OrderService;
+
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,15 @@ public class OrderTestController {
 	private final OrderService orderService;
 
 	@PostMapping
+	@RateLimiter(name = "createOrderRateLimiter", fallbackMethod = "createOrderRateLimiterFallback")
 	public ResponseEntity<Object> createOrder(@RequestBody OrderCreateRequest request) {
-		logger.info("Request object: {}", request);
+		// logger.info("Request object: {}", request);
 		// return ResponseEntity.ok("Order created");
+		logger.info("Retrying.....");
+		logger.info("Order created request received {}", request);
+		// if (2 < 5) {
+		// throw new NullPointerException("Request failed");
+		// }
 		return ResponseEntity.ok(orderService.createOrder(request));
 	}
 

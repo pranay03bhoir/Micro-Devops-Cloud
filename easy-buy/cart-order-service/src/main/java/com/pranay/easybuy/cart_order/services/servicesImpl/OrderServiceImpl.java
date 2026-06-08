@@ -1,22 +1,19 @@
 package com.pranay.easybuy.cart_order.services.servicesImpl;
 
 import com.pranay.easybuy.cart_order.OrderCreateRequest;
-import com.pranay.easybuy.cart_order.client.ProductClientTest;
+import com.pranay.easybuy.cart_order.client.ProductClient;
 import com.pranay.easybuy.cart_order.dto.CheckoutRequest;
 import com.pranay.easybuy.cart_order.dto.OrderResponse;
 import com.pranay.easybuy.cart_order.dto.ProductResponse;
 import com.pranay.easybuy.cart_order.dto.ProductSnapshot;
 import com.pranay.easybuy.cart_order.services.OrderService;
 
-import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
@@ -28,7 +25,7 @@ import org.springframework.web.client.RestTemplate;
 public class OrderServiceImpl implements OrderService {
 	private final RestTemplate restTemplate;
 	private final RestClient restClient;
-	private final ProductClientTest productClientTest;
+	private final ProductClient productClient;
 
 	// @Override
 	// @Retry(name = "createOrderRetry", fallbackMethod = "createOrderFallback")
@@ -57,23 +54,16 @@ public class OrderServiceImpl implements OrderService {
 		return null;
 	}
 
-	private ProductResponse getProduct(String productId) {
+	private ProductSnapshot getProduct(UUID productId) {
 		try {
-			ProductResponse productbyId = productClientTest.getProductById(productId);
+			ProductSnapshot productbyId = productClient.getProductById(productId);
 			if (productbyId == null) {
-				ProductResponse productResponse = new ProductResponse(
-						productId,
-						"Demo product",
-						"This is a demo product",
-						"this is long desc demo product",
-						23423.88,
-						500,
-						true,
-						java.util.Collections.emptyList());
+				ProductSnapshot product = new ProductSnapshot(productId, "Demo product", "This is a demo product",
+						"this is long desc demo product", 23423.88, 500, true);
 
-				return productResponse;
+				return product;
 			}
-			return productClientTest.getProductById(productId);
+			return productClient.getProductById(productId);
 
 			// var productUrl = "http://localhost:8081/api/products/" + productId;
 			// log.info("get product url {}", productUrl);

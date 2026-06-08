@@ -24,7 +24,7 @@ import com.pranay.easybuy.inventory.services.InventoryService;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
 

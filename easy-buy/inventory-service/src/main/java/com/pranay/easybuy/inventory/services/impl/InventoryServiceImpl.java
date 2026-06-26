@@ -1,30 +1,23 @@
 package com.pranay.easybuy.inventory.services.impl;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
 import com.pranay.easy_buy.commonservice.payload.ProductSnapshot;
 import com.pranay.easybuy.inventory.client.ProductClient;
 import com.pranay.easybuy.inventory.config.InventoryMapper;
 import com.pranay.easybuy.inventory.domain.InventoryItem;
-import com.pranay.easybuy.inventory.dto.AdjustStockRequest;
-import com.pranay.easybuy.inventory.dto.CreateInventoryRequest;
-import com.pranay.easybuy.inventory.dto.InventoryResponse;
-import com.pranay.easybuy.inventory.dto.ReleaseStockRequest;
-import com.pranay.easybuy.inventory.dto.ReserveStockRequest;
-import com.pranay.easybuy.inventory.dto.UpdateInventoryRequest;
+import com.pranay.easybuy.inventory.dto.*;
 import com.pranay.easybuy.inventory.exceptions.BusinessRuleException;
 import com.pranay.easybuy.inventory.exceptions.ResourceNotFoundException;
 import com.pranay.easybuy.inventory.repository.InventoryItemRepository;
 import com.pranay.easybuy.inventory.services.InventoryService;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.List;
+import java.util.UUID;
 
+@Service
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
 

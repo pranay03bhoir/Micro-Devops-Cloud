@@ -1,16 +1,16 @@
 package com.pranay.easybuy.users.dto;
 
-import java.time.Instant;
-import java.util.UUID;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pranay.easybuy.users.entity.Role;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -27,6 +27,7 @@ public class UserDto {
     private String email;
 
     @NotBlank(message = "Password is required")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String phoneNumber;

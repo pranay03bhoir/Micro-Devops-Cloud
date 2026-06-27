@@ -20,15 +20,22 @@ import java.util.function.Function;
 @Slf4j
 public class JwtService {
 
-    @Value("${jwt.secret}")
+
     private String key;
-    private final Key secretKey = Keys.hmacShaKeyFor(key.getBytes());
+    private final Key secretKey;
 
-    @Value("${jwt.access-token-expiration}")
-    private long accessTokenExpiration;
-    @Value("${jwt.refresh-token-expiration}")
-    private long refreshTokenExpiration;
 
+    private final long accessTokenExpiration;
+
+    private final long refreshTokenExpiration;
+
+    public JwtService(@Value("${jwt.secret}") String key,
+                      @Value("${jwt.access-token-expiration}") long accessTokenExpiration,
+                      @Value("${jwt.refresh-token-expiration}") long refreshTokenExpiration) {
+        this.secretKey = Keys.hmacShaKeyFor(key.getBytes());
+        this.accessTokenExpiration = accessTokenExpiration;
+        this.refreshTokenExpiration = refreshTokenExpiration;
+    }
 //    The Raw Material (Token): You receive a sealed, locked box (the JWT).
 //
 //    The Order (extractUsername): You tell the factory, "I need the username out of this box."

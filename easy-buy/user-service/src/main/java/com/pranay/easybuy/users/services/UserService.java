@@ -1,8 +1,6 @@
 package com.pranay.easybuy.users.services;
 
-import com.pranay.easybuy.users.dto.LoginRequest;
-import com.pranay.easybuy.users.dto.LoginResponse;
-import com.pranay.easybuy.users.dto.UserDto;
+import com.pranay.easybuy.users.dto.*;
 import com.pranay.easybuy.users.entity.Role;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +24,6 @@ public interface UserService {
     void changeUserRole(UUID id, Role role);
 
     LoginResponse login(LoginRequest loginRequest);
+
+    TokenRefreshResponse refreshToken(TokenRefreshRequest tokenRefreshRequest);
 }

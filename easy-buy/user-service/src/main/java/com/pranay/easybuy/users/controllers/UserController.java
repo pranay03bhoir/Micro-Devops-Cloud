@@ -1,10 +1,6 @@
 package com.pranay.easybuy.users.controllers;
 
-import com.pranay.easybuy.users.dto.ChangeRoleRequest;
-import com.pranay.easybuy.users.dto.LoginRequest;
-import com.pranay.easybuy.users.dto.LoginResponse;
-import com.pranay.easybuy.users.dto.UserDto;
-import com.pranay.easybuy.users.security.services.JwtService;
+import com.pranay.easybuy.users.dto.*;
 import com.pranay.easybuy.users.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,21 +12,25 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    private final JwtService jwtService;
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         return new ResponseEntity<>(userService.createUser(userDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return new ResponseEntity<>(userService.login(loginRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenRefreshResponse> refreshToken(@Valid @RequestBody TokenRefreshRequest tokenRefreshRequest) {
+        return new ResponseEntity<>(userService.refreshToken(tokenRefreshRequest), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

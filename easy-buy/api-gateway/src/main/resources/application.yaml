@@ -43,12 +43,7 @@ resilience4j.circuitbreaker:
       failure-rate-threshold: 50
       wait-duration-in-open-state: 10000
 
-product:
-  service:
-    id: lb://PRODUCTS-SERVICE
-    uri: ${PRODUCT_SERVICE_URI:http://localhost:8081}
-
-cartOrder:
-  service:
-    id: lb://CART-ORDER-SERVICE
-    uri: ${CART_ORDER_SERVICE_URI:http://localhost:8082}
+PRODUCT_SERVICE_ID: lb://PRODUCTS-SERVICE
+INVENTORY_SERVICE_ID: lb://INVENTORY-SERVICE
+CART_ORDER_SERVICE_ID: lb://CART-ORDER-SERVICE
+USER_SERVICE_ID: lb://USER-SERVICE

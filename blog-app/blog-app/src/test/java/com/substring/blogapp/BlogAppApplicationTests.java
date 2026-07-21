@@ -12,7 +12,7 @@ class BlogAppApplicationTests {
     //field injection
 //    @Autowired
     @Autowired
-    private  CategoryService categoryService;
+    private CategoryService categoryService;
     @Autowired
     private ArticleModelMapper articleModelMapper;
 
@@ -21,9 +21,8 @@ class BlogAppApplicationTests {
 //    }
 
     @Test
-    public void testBean(){
+    public void testBean() {
         System.out.println("testing bean");
-        categoryService.create();
         System.out.println(articleModelMapper);
     }
 

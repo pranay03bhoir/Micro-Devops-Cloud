@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: blog-app
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/blog_app
+    username: root
+    password: Pranay@666
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+      database-platform: org.hibernate.dialect.MySQLDialect
+
+  #minIO configuration
+  minio:
+    endpoint: http://localhost:9000
+    access-key: minioadmin
+    secret-key: minioadmin
+    bucket-name: blog-app
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

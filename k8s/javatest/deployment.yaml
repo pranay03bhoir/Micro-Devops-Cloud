@@ -1,0 +1,32 @@
+# This is the specification for the deployment.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javatest-deployment
+  labels:
+    app: javatest
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: javatest
+
+  # Template helps create the pod.
+  # This is a specification for the pods creation.
+  template:
+    metadata:
+      labels:
+        app: javatest
+    spec:
+      containers:
+        - name: javatestcontainer
+          image: pt03b/javaapp_demo:1.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"

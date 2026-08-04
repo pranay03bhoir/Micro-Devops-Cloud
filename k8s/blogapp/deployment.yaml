@@ -25,13 +25,25 @@ spec:
             - containerPort: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "prod"
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-config-map
+                  key: SPRING_ACTIVE_PROFILE
             - name: DB_HOST
-              value: "mysql-service"
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-config-map
+                  key: DB_HOST
             - name: DB_PORT
-              value: "3308"
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-config-map
+                  key: DB_PORT
             - name: DB_NAME
-              value: "blogdb"
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-config-map
+                  key: DB_NAME
           resources:
             requests:
               cpu: "100m"

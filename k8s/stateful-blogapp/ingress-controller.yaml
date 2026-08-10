@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: blogapp-ingress
+
+spec:
+  # nginx ingress controller is used to manage the ingress resources.
+  ingressClassName: nginx
+  rules:
+    # The rules section defines the routing rules for incoming traffic to the blogapp service.
+    - host: blogapp.local
+      http:
+        paths:
+          # The paths section defines the routing rules for incoming traffic to the blogapp service.
+          # The path / is used to route traffic to the blogapp service.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: blogapp-service
+                port:
+                  number: 80

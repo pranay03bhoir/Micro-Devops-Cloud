@@ -1,0 +1,24 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: {{ include "stateful-blog.fullname" . }}-ingress
+  labels: {{- include "stateful-blog.labels" . | nindent 4 }}
+
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.ingress.host | quote }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path | quote }}
+            pathType: {{ .Values.ingress.pathType | quote }}
+            backend:
+              service:
+                name: {{ include "stateful-blog.fullname" . }}-service
+                port:
+                  number: {{ .Values.blogApp.service.port }}
+{{- end -}}

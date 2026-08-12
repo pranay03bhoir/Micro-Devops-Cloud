@@ -1,0 +1,69 @@
+# This is the specification for the deployment.
+{{ if .Values.mysql.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "stateful-blog.fullname" . }}-mysql
+  labels: {{- include "stateful-blog.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "stateful-blog.fullname" . }}-mysql
+  replicas: {{ .Values.mysql.replicas }}
+  selector:
+    matchLabels:
+      app: mysql
+
+  # Template helps create the pod.
+  # This is a specification for the pods creation.
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql-container
+          image: {{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}
+          imagePullPolicy: {{ .Values.mysql.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.mysql.service.targetPort }}
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "stateful-blog.fullname" . }}-secret
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "stateful-blog.fullname" . }}-config-map
+                  key: MYSQL_DATABASE
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+          resources: {{- toYaml .Values.mysql.resources | nindent 12 }}
+      # pod spec ends here
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-storage
+      spec:
+        accessModes:
+          - {{ .Values.mysql.persistence.accessMode | quote }}
+          {{- if .Values.mysql.persistence.storageClass }}
+          storageClassName: {{ .Values.mysql.persistence.storageClass | quote }}
+          {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.mysql.persistence.size | quote }}
+      # volumes:
+      #   - name: mysql-storage
+      #     persistentVolumeClaim:
+      #       claimName: mysql-pvc
+
+      # - name: mysql-storage
+      #   hostPath:
+      #     path: /data/mysql
+      #     type: DirectoryOrCreate
+
+      # - name: mysql-storage
+      #   emptyDir: {}
+{{- end -}}

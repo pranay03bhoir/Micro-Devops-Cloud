@@ -1,0 +1,53 @@
+# This is the specification for the deployment.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogapp-deployment
+  labels:
+    app: blogapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blogapp
+
+  # Template helps create the pod.
+  # This is a specification for the pods creation.
+  template:
+    metadata:
+      labels:
+        app: blogapp
+    spec:
+      containers:
+        - name: blogapp-container
+          image: pt03b/blog-app:1.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-config-map
+                  key: SPRING_ACTIVE_PROFILE
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-config-map
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-config-map
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: blog-config-map
+                  key: DB_NAME
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"

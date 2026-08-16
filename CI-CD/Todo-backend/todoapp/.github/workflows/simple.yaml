@@ -2,6 +2,8 @@ name: Simple Concept Workflow
 
 on:
     push:
+        paths:
+            - "CI-CD/**"
         branches:
             - main
     workflow_dispatch:

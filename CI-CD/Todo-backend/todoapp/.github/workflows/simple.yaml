@@ -3,7 +3,7 @@ name: Simple Concept Workflow
 on:
     push:
         paths:
-            - "Micro-Devops-Cloud/CI-CD/Todo-backend/**"
+            - "CI-CD/Todo-backend/**"
         branches:
             - master
     workflow_dispatch:

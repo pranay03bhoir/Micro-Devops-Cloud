@@ -21,6 +21,13 @@ class TodoServiceTest {
     }
 
     @Test
+    void shouldInitDummyData() {
+        todoService.initDummyData();
+        List<Todo> todos = todoService.getAllTodos(null);
+        assertEquals(4, todos.size());
+    }
+
+    @Test
     void shouldCreateAndGetTodo() {
         CreateTodoRequest request = new CreateTodoRequest("Test Title", "Test Description", false);
         Todo created = todoService.createTodo(request);

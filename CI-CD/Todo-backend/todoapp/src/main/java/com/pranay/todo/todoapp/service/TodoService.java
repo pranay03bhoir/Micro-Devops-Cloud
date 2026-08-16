@@ -21,6 +21,16 @@ public class TodoService {
     private final Map<Long, Todo> todoStore = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
 
+    @jakarta.annotation.PostConstruct
+    public void initDummyData() {
+        if (todoStore.isEmpty()) {
+            createTodo(new CreateTodoRequest("Welcome to Todo App", "This is a pre-loaded sample todo item.", false));
+            createTodo(new CreateTodoRequest("Learn Spring Boot", "Explore REST APIs and in-memory data management.", true));
+            createTodo(new CreateTodoRequest("Build a Frontend", "Connect a React or Vue frontend to this Todo API.", false));
+            createTodo(new CreateTodoRequest("Setup CI/CD Pipeline", "Deploy the app automatically using Docker and GitHub Actions.", false));
+        }
+    }
+
     public List<Todo> getAllTodos(Boolean completed) {
         return todoStore.values().stream()
                 .filter(todo -> completed == null || todo.isCompleted() == completed)

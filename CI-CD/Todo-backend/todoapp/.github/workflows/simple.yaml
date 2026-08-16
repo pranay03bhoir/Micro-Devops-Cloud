@@ -1,0 +1,14 @@
+name: Simple Concept Workflow
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    Learn:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Hello World
+              run: echo "Hello World"

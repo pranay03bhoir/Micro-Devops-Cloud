@@ -5,7 +5,7 @@ on:
         paths:
             - "Micro-Devops-Cloud/CI-CD/Todo-backend/**"
         branches:
-            - main
+            - master
     workflow_dispatch:
 
 jobs:

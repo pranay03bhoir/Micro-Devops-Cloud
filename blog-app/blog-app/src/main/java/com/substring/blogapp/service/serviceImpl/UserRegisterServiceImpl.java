@@ -6,23 +6,25 @@ import com.substring.blogapp.models.Role;
 import com.substring.blogapp.models.User;
 import com.substring.blogapp.repositories.UserRepository;
 import com.substring.blogapp.service.UserRegisterService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class UserRegisterServiceImpl implements UserRegisterService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
+    public UserRegisterServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
+    }
+
     @Override
     public UserDto registerUser(UserDto userDto) {
-
         User user = modelMapper.map(userDto, User.class);
         validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
